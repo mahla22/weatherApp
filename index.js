@@ -13,6 +13,7 @@ searchBtn.addEventListener("click", async event => {
        try {
         const weatherData = await getWeatherData(city);
         displayWeatherData(weatherData);
+        console.log(weatherData);
        }
 
        catch(error) {
@@ -45,36 +46,51 @@ function displayWeatherData(data) {
     const emojiDisplay = document.createElement("div");
     const tempratureDisplay = document.createElement("h1");
     const descriptionDisplay = document.createElement("p");
-    const humdityDisplay = document.createElement("p");
+    const humidityDisplay = document.createElement("p");
     const windSpeedDisplay = document.createElement("p");
 
     emojiDisplay.textContent = getEmoji(id);
-    tempratureDisplay.textContent = temp;
+    tempratureDisplay.textContent = `${(temp - 273.15).toFixed(2)}°C`;
     descriptionDisplay.textContent = description;
-    humdityDisplay.textContent = `${humidity}%`;
+    humidityDisplay.textContent = `humidity: ${humidity}%`;
     windSpeedDisplay.textContent = `💨${speed}`;
 
     emojiDisplay.classList.add("emoji");
     descriptionDisplay.classList.add("description");
-    humdityDisplay.classList.add("humidity");
+    humidityDisplay.classList.add("humidity");
     windSpeedDisplay.classList.add("windSpeed");
 
     infoBox.appendChild(emojiDisplay);
     infoBox.appendChild(tempratureDisplay);
     infoBox.appendChild(descriptionDisplay);
-    infoBox.appendChild(humdityDisplay);
-    infoBox.appendChild(windSpeedDisplay);
-    
-
+    infoBox.appendChild(humidityDisplay);
+    infoBox.appendChild(windSpeedDisplay);   
 }
 function getEmoji(id) {
     let emoji = "";
     
-    switch(id) {
-        case(id >= 100 && id < 110):
-            emoji = "";
+    switch(true) {
+        case(id >= 200 && id <= 232):
+            emoji = "⛈";
+        case(id >= 300 && id <= 321):
+            emoji = "🌨";
+        case(id >= 500 && id <= 504):
+            emoji = "🌦";
+        case(id >= 520 && id <= 531):
+            emoji = "🌨";
+        case(id >= 600 && id <= 622 && id == 511):
+            emoji = "❄";
+        case(id >= 701  && id <= 781):
+            emoji = "🌫";
+        case id == 800:
+            emoji = "☀";
+        case id == 801:
+            emoji = "🌥";
+        case (id >= 802  && id <= 804):
+            emoji = "☁";
     }
     return emoji;
+
 }
 function displayError(message) {
     const element = document.createElement("p");
@@ -83,7 +99,5 @@ function displayError(message) {
 
     infoBox.textContent = "";
     infoBox.style.display = "flex";
-    infoBox.style.height = "200px";
     infoBox.appendChild(element);
-
 }
